@@ -12,24 +12,24 @@ import (
 func main() {
 	idx := len(os.Args)
 	if idx < 2 {
-		log.Fatal("操作参数缺失！")
+		log.Fatal("Missing operation args!")
 	}
 	switch os.Args[1] {
 	case "login":
 		if idx < 4 {
-			log.Println("帐号密码缺失！将使用zc1登陆。")
+			log.Println("Missing Username or Password! Program will be logged as default user!")
 			login("zc1", "1")
 			break
 		}
-		log.Println("使用 " + os.Args[2] + " 账号登录")
+		log.Println("Logging as " + os.Args[2])
 		login(os.Args[2], os.Args[3])
 		break
 	case "logout":
-		log.Println("登出")
+		log.Println("Logout")
 		logout()
 		break
 	default:
-		log.Println("参数错误")
+		log.Println("Incorrect operation args!")
 	}
 }
 
@@ -66,7 +66,7 @@ func login(username string, password string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("登陆状态：%t\n", strings.Contains(string(bodyText), "You have successfully logged into our system."))
+	log.Printf("Logging status: %t\n", strings.Contains(string(bodyText), "You have successfully logged into our system."))
 }
 
 func logout() {
@@ -97,8 +97,8 @@ func logout() {
 		log.Fatal(err)
 	}
 	if strings.Contains(string(bodyText), "Msg=14") {
-		log.Println("成功登出")
+		log.Println("Logout successfully!")
 	} else {
-		log.Println("未知错误")
+		log.Println("Unknown error!")
 	}
 }
