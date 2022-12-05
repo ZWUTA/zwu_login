@@ -10,7 +10,7 @@ A command-line tool to login ZWU(浙江万里学院) net services, especially fo
 # Run as systemd-timer
 - /etc/systemd/system/zwu.service
 ````
-/etc/systemd/system/zwu.service
+# /etc/systemd/system/zwu.service
 [Unit]
 Description=zwu login
 [Service]
@@ -18,7 +18,7 @@ ExecStart=/root/zwu login YOUR_USERNAME YOUR_PASSWORD
 ````
 - /etc/systemd/system/zwu.timer
 ````
-/etc/systemd/system/zwu.timer
+# /etc/systemd/system/zwu.timer
 [Unit]
 Description=zwu Timer
 
