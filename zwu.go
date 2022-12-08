@@ -66,7 +66,13 @@ func login(username string, password string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Logging status: %t\n", strings.Contains(string(bodyText), "You have successfully logged into our system."))
+	status := strings.Contains(string(bodyText), "You have successfully logged into our system")
+
+	if status {
+		log.Println("Login successfully!")
+	} else {
+		log.Fatal("Login failed!")
+	}
 }
 
 func logout() {
@@ -96,9 +102,11 @@ func logout() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if strings.Contains(string(bodyText), "Msg=14") {
+
+	status := strings.Contains(string(bodyText), "Msg=14")
+	if status {
 		log.Println("Logout successfully!")
 	} else {
-		log.Println("Unknown error!")
+		log.Fatal("Logout failed!")
 	}
 }
