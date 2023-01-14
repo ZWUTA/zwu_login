@@ -30,7 +30,7 @@ release:
 		# build for windows_amd64
 		GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o ${BINARY}_windows_amd64.exe && upx -9 ${BINARY}_windows_amd64.exe
 		# build for windows_arm64
-		GOOS=windows GOARCH=arm64 go build -ldflags "-s -w" -o ${BINARY}_windows_arm64.exe && upx -9 ${BINARY}_windows_arm64.exe
+		GOOS=windows GOARCH=arm64 go build -ldflags "-s -w" -o ${BINARY}_windows_arm64.exe
 		# build for darwin_amd64
 		GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o ${BINARY}_darwin_amd64 && upx -9 ${BINARY}_darwin_amd64
 		# build for darwin_arm64
