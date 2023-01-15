@@ -2,7 +2,7 @@
 A command-line tool to login ZWU(浙江万里学院) net services, especially for headless devices. Written in Golang
 
 # Useage
-1. Download ``zwu_$ARCH_$PLATFORM`` from GitHub release
+1. Download ``zwu_$PLATFORM_$ARCH`` from GitHub release
 2. Rename it to ``zwu``
 3. (Linux only) ``chmod a+x ./zwu``
 4. **Login:** ``./zwu -u <username> -p <password>``
