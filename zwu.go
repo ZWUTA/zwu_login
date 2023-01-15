@@ -41,16 +41,8 @@ func login(username string, password string) {
 		log.Fatal(err)
 	}
 	req.Header.Set("Host", "192.168.255.19")
-	req.Header.Set("Content-Length", "43")
-	req.Header.Set("Cache-Control", "max-age=0")
-	req.Header.Set("Upgrade-Insecure-Requests", "1")
 	req.Header.Set("Origin", "http://192.168.255.19")
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.102 Safari/537.36")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 	req.Header.Set("Referer", "http://192.168.255.19/0.htm")
-	req.Header.Set("Accept-Encoding", "gzip, deflate")
-	req.Header.Set("Accept-Language", "zh-CN,zh;q=0.9")
 	req.Header.Set("Connection", "close")
 	resp, err := client.Do(req)
 	if err != nil {
@@ -82,11 +74,6 @@ func logout() {
 		log.Fatal(err)
 	}
 	req.Header.Set("Host", "192.168.255.19")
-	req.Header.Set("Upgrade-Insecure-Requests", "1")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.102 Safari/537.36")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-	req.Header.Set("Accept-Encoding", "gzip, deflate")
-	req.Header.Set("Accept-Language", "zh-CN,zh;q=0.9")
 	req.Header.Set("Connection", "close")
 	resp, err := client.Do(req)
 	if err != nil {
