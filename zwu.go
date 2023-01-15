@@ -2,7 +2,6 @@ package main
 
 import (
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -54,11 +53,12 @@ func login(username string, password string) {
 			log.Fatal(err)
 		}
 	}(resp.Body)
-	bodyText, err := ioutil.ReadAll(resp.Body)
+	buf := new(strings.Builder)
+	_, err = io.Copy(buf, resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	status := strings.Contains(string(bodyText), "You have successfully logged into our system")
+	status := strings.Contains(buf.String(), "You have successfully logged into our system")
 
 	if status {
 		log.Println("Login successfully!")
@@ -85,12 +85,13 @@ func logout() {
 			log.Fatal(err)
 		}
 	}(resp.Body)
-	bodyText, err := ioutil.ReadAll(resp.Body)
+	buf := new(strings.Builder)
+	_, err = io.Copy(buf, resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	status := strings.Contains(string(bodyText), "Msg=14")
+	status := strings.Contains(buf.String(), "Msg=14")
 	if status {
 		log.Println("Logout successfully!")
 	} else {
