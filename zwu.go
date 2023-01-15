@@ -1,38 +1,34 @@
 package main
 
 import (
+	"flag"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 )
 
 func main() {
-	idx := len(os.Args)
-	if idx < 2 {
-		log.Fatal("Missing operation args!")
-	}
-	switch os.Args[1] {
-	case "login":
-		if idx < 4 {
-			log.Println("Missing Username or Password! Program will be logged as default user!")
-			login("zc1", "1")
-			break
-		}
-		log.Println("Logging as " + os.Args[2])
-		login(os.Args[2], os.Args[3])
-		break
-	case "logout":
-		log.Println("Logout")
+	var (
+		username string
+		password string
+		isLogout bool
+	)
+
+	flag.StringVar(&username, "u", "zc1", "Username")
+	flag.StringVar(&password, "p", "1", "Password")
+	flag.BoolVar(&isLogout, "L", false, "Logout")
+	flag.Parse()
+
+	if isLogout {
 		logout()
-		break
-	default:
-		log.Println("Incorrect operation args!")
+	} else {
+		login(username, password)
 	}
 }
 
 func login(username string, password string) {
+	log.Println("Login as", username, "...")
 	client := &http.Client{}
 	var data = strings.NewReader("DDDDD=" + username + "&upass=" + password + "&0MKKey=%B5%C7%C2%BC+Login")
 	req, err := http.NewRequest("POST", "http://192.168.255.19/0.htm", data)
@@ -68,6 +64,7 @@ func login(username string, password string) {
 }
 
 func logout() {
+	log.Println("Logout...")
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "http://192.168.255.19/F.htm", nil)
 	if err != nil {
