@@ -2,19 +2,23 @@
 A command-line tool to login ZWU(浙江万里学院) net services, especially for headless devices. Written in Golang
 
 # Useage
-1. Download ``zwu`` from GitHub release
-2. (Linux only) ``chmod a+x ./zwu``
-3. Login ``./zwu login YOUR_USERNAME YOUR_PASSWORD``
-4. Logout ``./zwu logout``
+1. Download ``zwu_$ARCH_$PLATFORM`` from GitHub release
+2. Rename it to ``zwu``
+3. (Linux only) ``chmod a+x ./zwu``
+4. **Login:** ``./zwu -u <username> -p <password>``
+5. **Logout:** ``./zwu -L``
+6. **Help:** ``./zwu -h``
 
 # Run as systemd-timer
 - /etc/systemd/system/zwu.service
 ````
 # /etc/systemd/system/zwu.service
 [Unit]
-Description=zwu login
+Description=zwu_login
+After=network.target
+
 [Service]
-ExecStart=/root/zwu login YOUR_USERNAME YOUR_PASSWORD
+ExecStart=/root/zwu -u <username> -p <password>
 ````
 - /etc/systemd/system/zwu.timer
 ````
@@ -23,8 +27,8 @@ ExecStart=/root/zwu login YOUR_USERNAME YOUR_PASSWORD
 Description=zwu Timer
 
 [Timer]
-OnCalendar=*-*-* *:30
-OnBootSec=20sec
+OnCalendar=hourly
+OnBootSec=10sec
 Unit=zwu.service
 
 [Install]
