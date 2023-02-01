@@ -13,11 +13,11 @@ A command-line tool to login ZWU(浙江万里学院) net services, especially fo
 5. **Logout:** ``./zwu -L``
 6. **Help:** ``./zwu -h``
 
-## Run as systemd-timer
+## Run as Systemd-timer
 
-- /etc/systemd/system/zwu.service
+Create file /etc/systemd/system/zwu.service
 
-````
+````text
 # /etc/systemd/system/zwu.service
 [Unit]
 Description=zwu_login
@@ -27,9 +27,9 @@ After=network.target
 ExecStart=/root/zwu -u <username> -p <password>
 ````
 
-- /etc/systemd/system/zwu.timer
+Create file /etc/systemd/system/zwu.timer
 
-````
+````text
 # /etc/systemd/system/zwu.timer
 [Unit]
 Description=zwu Timer
@@ -43,4 +43,4 @@ Unit=zwu.service
 WantedBy=timers.target
 ````
 
-- ``systemdtl enable --now zwu.timer``
+Create file ``systemdtl enable --now zwu.timer``
