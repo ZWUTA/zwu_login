@@ -24,7 +24,7 @@ Description=zwu_login
 After=network.target
 
 [Service]
-ExecStart=/root/zwu -u <username> -p <password>
+ExecStart=/root/zwu -u <用户名> -p <密码>
 ````
 
 创建文件 /etc/systemd/system/zwu.timer
