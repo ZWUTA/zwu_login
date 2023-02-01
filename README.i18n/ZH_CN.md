@@ -1,6 +1,6 @@
 # zwu_login
 
-[English](./README.md) | [简体中文](./README.i18n/ZH_CN.md)
+[English](../README.md) | [简体中文](./README.i18n/ZH_CN.md)
 
 一个用于登录 ZWU(浙江万里学院) 网络服务的命令行工具，对无显示设备尤其有用。使用Golang编写。
 
