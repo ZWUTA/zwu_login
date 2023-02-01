@@ -2,18 +2,18 @@
 
 [English](./README.md) | [简体中文](./README.i18n/ZH_CN.md)
 
-A command-line tool to login ZWU(浙江万里学院) net services, especially for headless devices. Written in Golang
+一个用于登录 ZWU(浙江万里学院) 网络服务的命令行工具，对无显示设备尤其有用。使用Golang编写。
 
-## Useage
+## 使用方法
 
-1. Download ``zwu_$PLATFORM_$ARCH`` from GitHub release
-2. Rename it to ``zwu``
-3. (*Unix only) ``chmod a+x ./zwu``
-4. **Login:** ``./zwu -u <username> -p <password>``
-5. **Logout:** ``./zwu -L``
-6. **Help:** ``./zwu -h``
+1. 从 Github release 下载 ``zwu_$目标平台_$目标架构``
+2. 将其重命名为 ``zwu``
+3. (仅 *Unix 系统需要) ``chmod a+x ./zwu``
+4. **登录:** ``./zwu -u <username> -p <password>``
+5. **登出:** ``./zwu -L``
+6. **帮助信息:** ``./zwu -h``
 
-## Run as systemd-timer
+## 作为 Systemd 计时器运行
 
 - /etc/systemd/system/zwu.service
 
