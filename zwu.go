@@ -80,6 +80,8 @@ func login(username string, password string) {
 		log.Fatalln("username", username, "not exist")
 	} else if strings.Contains(string(bodyText), "msga='ldap auth error'") {
 		log.Fatalln("username or password error")
+	} else if strings.Contains(string(bodyText), "msga='[02], 本帐号只能在指定 IP 段使用'") {
+		log.Fatalln("this account only available in specified IP range")
 	} else {
 		log.Fatalln("unknown error")
 	}
