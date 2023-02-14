@@ -11,7 +11,8 @@ A command-line tool to login ZWU(浙江万里学院) net services, especially fo
 3. (*Unix only) ``chmod a+x ./zwu``
 4. **Login:** ``./zwu -u <username> -p <password>``
 5. **Logout:** ``./zwu -L``
-6. **Help:** ``./zwu -h``
+6. **Status:** ``./zwu -S``
+7. **Help:** ``./zwu -h``
 
 ## Run as Systemd-timer
 
