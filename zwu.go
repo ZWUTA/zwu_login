@@ -18,6 +18,7 @@ func main() {
 		isLogout bool
 		isStatus bool
 	)
+	var client = http.DefaultClient
 
 	flag.StringVar(&username, "u", "zc1", "Username")
 	flag.StringVar(&password, "p", "1", "Password")
@@ -29,20 +30,19 @@ func main() {
 		log.Fatalln("more than ONE operation")
 	}
 	if isLogout {
-		logout()
+		logout(client)
 		return
 	}
 	if isStatus {
-		status()
+		status(client)
 		return
 	}
-	login(username, password)
+	login(username, password, client)
 }
 
-func login(username string, password string) {
+func login(username string, password string, client *http.Client) {
 	log.Println("login as", username, "...")
 
-	client := &http.Client{}
 	var data = strings.NewReader(`DDDDD=` +
 		username +
 		`&upass=` +
@@ -52,12 +52,6 @@ func login(username string, password string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	req.Header.Set("Origin", "http://192.168.255.19")
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
-	req.Header.Set("Referer", "http://192.168.255.19/0.htm")
-	req.Header.Set("Accept-Language", "zh-CN,zh;q=0.9")
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
@@ -87,18 +81,13 @@ func login(username string, password string) {
 	}
 }
 
-func logout() {
+func logout(client *http.Client) {
 	log.Println("logout...")
 
-	client := &http.Client{}
 	req, err := http.NewRequest("GET", "http://192.168.255.19/F.htm", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
-	req.Header.Set("Referer", "http://192.168.255.19/")
-	req.Header.Set("Accept-Language", "zh-CN,zh;q=0.9")
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
@@ -122,15 +111,12 @@ func logout() {
 	}
 }
 
-func status() {
-	client := &http.Client{}
+func status(client *http.Client) {
 	req, err := http.NewRequest("GET", "http://192.168.255.19/", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
-	req.Header.Set("Accept-Language", "zh-CN,zh;q=0.9")
+
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
