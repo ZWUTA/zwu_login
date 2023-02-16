@@ -27,22 +27,19 @@ func main() {
 	flag.Parse()
 
 	if *logoutOpt {
-		err := logout()
-		if err != nil {
+		if err := logout(); err != nil {
 			log.Println(err)
 		} else {
 			log.Println("success")
 		}
 	} else if *statusOpt {
-		err := status()
-		if err != nil {
+		if err := status(); err != nil {
 			log.Println(err)
 		}
 	} else if username == "" || password == "" {
 		log.Println("username and password can not be empty")
 	} else {
-		err := login(username, password)
-		if err != nil {
+		if err := login(username, password); err != nil {
 			log.Println(err)
 		} else {
 			log.Println("success")
