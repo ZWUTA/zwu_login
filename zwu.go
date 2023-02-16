@@ -16,34 +16,44 @@ var client = http.DefaultClient
 
 func main() {
 	var (
-		username string
-		password string
+		username      string
+		password      string
+		forceTryLogin bool
+		logoutOpt     bool
+		statusOpt     bool
 	)
 
 	flag.StringVar(&username, "u", "", "Username")
 	flag.StringVar(&password, "p", "", "Password")
-	logoutOpt := flag.Bool("L", false, "Perform Logout operation")
-	statusOpt := flag.Bool("S", false, "Perform GetStatus operation")
+	flag.BoolVar(&forceTryLogin, "f", false, "Force try login even though logged in")
+	flag.BoolVar(&logoutOpt, "L", false, "Perform Logout operation")
+	flag.BoolVar(&statusOpt, "S", false, "Perform GetStatus operation")
 	flag.Parse()
 
-	if *logoutOpt {
+	if logoutOpt {
 		if err := logout(); err != nil {
 			log.Println(err)
 		} else {
 			log.Println("success")
 		}
-	} else if *statusOpt {
+	} else if statusOpt {
 		if err := status(); err != nil {
 			log.Println(err)
 		}
 	} else if username == "" || password == "" {
 		log.Println("username and password can not be empty")
 	} else {
-		if err := login(username, password); err != nil {
-			log.Println(err)
-		} else {
-			log.Println("success")
+		if _, err := getInfo(); err != nil || forceTryLogin {
+			if err := login(username, password); err != nil {
+				log.Println(err)
+			} else {
+				log.Println("success")
+			}
+			return
 		}
+		log.Println("skip: device already authed")
+		log.Println(`if you really want to login again, retry with "-f" arg`)
+
 	}
 }
 
