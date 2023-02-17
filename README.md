@@ -9,7 +9,7 @@ A command-line tool to login ZWU(浙江万里学院) net services, especially fo
 1. Download ``zwu_$PLATFORM_$ARCH`` from GitHub release
 2. Rename it to ``zwu``
 3. (*Unix only) ``chmod a+x ./zwu``
-4. **Login:** ``./zwu -u <username> -p <password>``
+4. **Login:** ``./zwu [-f] -u <username> -p <password>``
 5. **Logout:** ``./zwu -L``
 6. **Status:** ``./zwu -S``
 7. **Help:** ``./zwu -h``
