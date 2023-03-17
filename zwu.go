@@ -172,7 +172,26 @@ func status() error {
 
 	MB, _ := strconv.ParseFloat(flow, 64)
 	MB /= 1024
-	log.Println("time:", time, "Min")
-	log.Println("flow:", MB, "MB")
+
+	// less than 1h, print minutes, else if less than 24hours print hours, else print days
+	if timeInt, err := strconv.Atoi(time); err == nil {
+		if timeInt < 60 {
+			log.Println("time:", time, "Min")
+		} else if timeInt < 60*24 {
+			log.Println("time:", timeInt/60, "Hour")
+		} else {
+			log.Println("time:", timeInt/60/24, "Day")
+		}
+	} else {
+		log.Println("time:", time)
+	}
+	// less than 1GB, print MB, else if less than 1TB print GB, else print TB
+	if MB < 1024 {
+		log.Println("flow:", MB, "MB")
+	} else if MB < 1024*1024 {
+		log.Println("flow:", MB/1024, "GB")
+	} else {
+		log.Println("flow:", MB/1024/1024, "TB")
+	}
 	return nil
 }
