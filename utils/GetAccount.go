@@ -24,6 +24,10 @@ func GetAccount(client *http.Client) (int, float64, error) {
 	}(resp.Body)
 	bodyText := GbkToUtf8(resp.Body)
 
+	if strings.Contains(bodyText, `location.href="0.htm"`) {
+		return 0, 0, errors.New("device is not authed")
+	}
+
 	time := strings.Split(strings.Split(bodyText, "time='")[1], "';")[0]
 	flow := strings.Split(strings.Split(bodyText, "flow='")[1], "';")[0]
 	time = strings.Trim(time, " ")
@@ -32,9 +36,5 @@ func GetAccount(client *http.Client) (int, float64, error) {
 	timeInt, _ := strconv.Atoi(time)
 	flowFloat64, _ := strconv.ParseFloat(flow, 64)
 
-	if strings.Contains(bodyText, `location.href="0.htm"`) {
-		return 0, 0, errors.New("device is not authed")
-	} else {
-		return timeInt, flowFloat64, nil
-	}
+	return timeInt, flowFloat64, nil
 }
