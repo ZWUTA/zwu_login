@@ -39,19 +39,16 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		}
-		break
 	case optStatus:
 		err = utils.Status(client)
 		if err != nil {
 			log.Println(err)
 		}
-		break
 	case optCreateConfig:
 		err = utils.CreateConfig()
 		if err != nil {
 			log.Println(err)
 		}
-		break
 	default:
 		if username != "" && password != "" {
 
