@@ -51,3 +51,38 @@ func CreateConfig() error {
 	log.Println("Done!")
 	return nil
 }
+
+func loadConfig() error {
+	runtimeViper.SetConfigName("zwu")
+	runtimeViper.SetConfigType("toml")
+	runtimeViper.AddConfigPath(".")
+
+	err := runtimeViper.ReadInConfig()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func LoadUsers() ([]User, error) {
+	err := loadConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	var users []User
+	err = runtimeViper.UnmarshalKey("user", &users)
+	if err != nil {
+		return nil, err
+	}
+
+	var enabledUsers []User
+	for _, user := range users {
+		if user.Enabled {
+			enabledUsers = append(enabledUsers, user)
+		}
+	}
+
+	return enabledUsers, nil
+}
