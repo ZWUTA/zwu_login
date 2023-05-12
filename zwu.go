@@ -11,7 +11,6 @@ var (
 	username string
 	password string
 
-	optForceReLogin bool
 	optLogout       bool
 	optStatus       bool
 	optCreateConfig bool
@@ -21,7 +20,9 @@ func init() {
 	flag.StringVar(&username, "u", "", "Username")
 	flag.StringVar(&password, "p", "", "Password")
 
-	flag.BoolVar(&optForceReLogin, "f", false, "Force re-login even though logged in")
+	flag.BoolVar(&utils.ForceReLogin, "f", false, "Force re-login even though logged in")
+	flag.BoolVar(&utils.Randomize, "r", false, "Random select username in config")
+
 	flag.BoolVar(&optLogout, "L", false, "Perform Logout operation")
 	flag.BoolVar(&optStatus, "S", false, "Perform GetStatus operation")
 	flag.BoolVar(&optCreateConfig, "C", false, "Create ./zwu.toml template")

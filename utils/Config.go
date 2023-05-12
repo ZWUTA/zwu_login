@@ -19,11 +19,13 @@ type User struct {
 
 var runtimeViper = viper.New()
 
-func CreateConfig() error {
+func init() {
 	runtimeViper.SetConfigName("zwu")
 	runtimeViper.SetConfigType("toml")
 	runtimeViper.AddConfigPath(".")
+}
 
+func CreateConfig() error {
 	runtimeViper.Set("config", Config{
 		Randomize:       false,
 		ChangeOnMinutes: 0,
@@ -52,21 +54,24 @@ func CreateConfig() error {
 	return nil
 }
 
-func loadConfig() error {
-	runtimeViper.SetConfigName("zwu")
-	runtimeViper.SetConfigType("toml")
-	runtimeViper.AddConfigPath(".")
+func LoadConfig() (Config, error) {
+	var config Config
 
 	err := runtimeViper.ReadInConfig()
 	if err != nil {
-		return err
+		return config, err
 	}
 
-	return nil
+	err = runtimeViper.UnmarshalKey("config", &config)
+	if err != nil {
+		return config, err
+	}
+
+	return config, nil
 }
 
 func LoadUsers() ([]User, error) {
-	err := loadConfig()
+	err := runtimeViper.ReadInConfig()
 	if err != nil {
 		return nil, err
 	}

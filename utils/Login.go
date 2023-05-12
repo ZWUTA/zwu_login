@@ -4,11 +4,21 @@ import (
 	"errors"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Login(client *http.Client, username string, password string) error {
+	if !ForceReLogin {
+		if _, _, err := GetAccount(client); err == nil {
+			log.Println("skip: device already authed")
+			log.Println(`if you really want to login again, retry with "-f" arg`)
+			return nil
+		}
+	}
+
 	log.Println("login as", username, "...")
 
 	var data = strings.NewReader(`DDDDD=` +
@@ -47,6 +57,9 @@ func Login(client *http.Client, username string, password string) error {
 }
 
 func LoginFromConfig(client *http.Client) error {
+	log.Println("username and password not provided")
+	log.Println("try parsing from config file...")
+
 	users, err := LoadUsers()
 	if err != nil {
 		return err
@@ -57,6 +70,16 @@ func LoginFromConfig(client *http.Client) error {
 	}
 
 	log.Println("found", len(users), "user(s)")
+
+	if Randomize {
+		log.Println("randomize user list")
+
+		source := rand.NewSource(time.Now().UnixNano())
+		r := rand.New(source)
+		r.Shuffle(len(users), func(i, j int) {
+			users[i], users[j] = users[j], users[i]
+		})
+	}
 
 	for _, user := range users {
 		if err := Login(client, user.Username, user.Password); err == nil {
