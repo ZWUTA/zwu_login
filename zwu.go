@@ -14,6 +14,7 @@ var (
 	optLogout       bool
 	optStatus       bool
 	optCreateConfig bool
+	optDaemon       bool
 )
 
 func init() {
@@ -26,6 +27,7 @@ func init() {
 	flag.BoolVar(&optLogout, "L", false, "Perform Logout operation")
 	flag.BoolVar(&optStatus, "S", false, "Perform GetStatus operation")
 	flag.BoolVar(&optCreateConfig, "C", false, "Create ./zwu.toml template")
+	flag.BoolVar(&optDaemon, "D", false, "Run as daemon")
 
 	flag.Parse()
 }
@@ -49,6 +51,10 @@ func run() error {
 
 	if optCreateConfig {
 		return utils.CreateConfig()
+	}
+
+	if optDaemon {
+		return utils.Daemon(client)
 	}
 
 	if username == "" || password == "" {

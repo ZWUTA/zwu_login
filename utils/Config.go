@@ -3,12 +3,15 @@ package utils
 import (
 	"github.com/spf13/viper"
 	"log"
+	"math/rand"
+	"time"
 )
 
 type Config struct {
 	Randomize       bool
-	ChangeOnMinutes int
-	ChangeOnFlow    float64
+	IntervalMinutes int
+	ChangeOnHours   int
+	ChangeOnGB      float64
 }
 
 type User struct {
@@ -28,8 +31,9 @@ func init() {
 func CreateConfig() error {
 	runtimeViper.Set("config", Config{
 		Randomize:       false,
-		ChangeOnMinutes: 0,
-		ChangeOnFlow:    0.0,
+		IntervalMinutes: 5,
+		ChangeOnHours:   0,
+		ChangeOnGB:      0.0,
 	})
 	runtimeViper.Set("user", []User{
 		{
@@ -54,7 +58,9 @@ func CreateConfig() error {
 	return nil
 }
 
-func LoadConfig() (Config, error) {
+func loadConfig() (Config, error) {
+	log.Println("parsing config...")
+
 	var config Config
 
 	err := runtimeViper.ReadInConfig()
@@ -70,7 +76,8 @@ func LoadConfig() (Config, error) {
 	return config, nil
 }
 
-func LoadUsers() ([]User, error) {
+func loadUsers() ([]User, error) {
+	log.Println("parsing users...")
 	err := runtimeViper.ReadInConfig()
 	if err != nil {
 		return nil, err
@@ -90,4 +97,16 @@ func LoadUsers() ([]User, error) {
 	}
 
 	return enabledUsers, nil
+}
+
+func randomizeUserList(users []User) []User {
+	log.Println("randomize user list...")
+
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
+	r.Shuffle(len(users), func(i, j int) {
+		users[i], users[j] = users[j], users[i]
+	})
+
+	return users
 }

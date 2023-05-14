@@ -4,10 +4,8 @@ import (
 	"errors"
 	"io"
 	"log"
-	"math/rand"
 	"net/http"
 	"strings"
-	"time"
 )
 
 func Login(client *http.Client, username string, password string) error {
@@ -52,18 +50,11 @@ func Login(client *http.Client, username string, password string) error {
 	case strings.Contains(bodyText, "msga='[02], 本帐号只能在指定 IP 段使用'"):
 		return errors.New("this account only available in specified IP range")
 	default:
-		return errors.New("unknown error")
+		return errors.New("login failed")
 	}
 }
 
-func LoginFromConfig(client *http.Client) error {
-	log.Println("username and password not provided")
-	log.Println("try parsing from config file...")
-
-	users, err := LoadUsers()
-	if err != nil {
-		return err
-	}
+func LoginUserList(client *http.Client, users []User) error {
 
 	if len(users) == 0 {
 		return errors.New("no user found")
@@ -72,21 +63,26 @@ func LoginFromConfig(client *http.Client) error {
 	log.Println("found", len(users), "user(s)")
 
 	if Randomize {
-		log.Println("randomize user list")
-
-		source := rand.NewSource(time.Now().UnixNano())
-		r := rand.New(source)
-		r.Shuffle(len(users), func(i, j int) {
-			users[i], users[j] = users[j], users[i]
-		})
+		users = randomizeUserList(users)
 	}
 
 	for _, user := range users {
-		if err := Login(client, user.Username, user.Password); err == nil {
-			return nil
+		if err := Login(client, user.Username, user.Password); err != nil {
+			log.Println(err)
+			continue
 		}
-		log.Println("login failed")
+		return nil
 	}
 
 	return errors.New("all login attempts failed")
+}
+
+func LoginFromConfig(client *http.Client) error {
+	log.Println("username and password not provided")
+
+	users, err := loadUsers()
+	if err != nil {
+		return err
+	}
+	return LoginUserList(client, users)
 }
